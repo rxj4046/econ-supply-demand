@@ -1,6 +1,12 @@
-streamlit==1.50.0
-matplotlib==3.7.1
-numpy==1.24.4
-scipy==1.10.1
-numba==0.58.1
-llvmlite==0.41.1
+# 核心依赖
+streamlit>=1.30.0,<2.0.0
+matplotlib>=3.8.0,<4.0.0
+numpy>=1.26.0,<2.0.0
+
+# 如果用到numba/llvmlite，指定兼容版本
+numba>=0.59.0,<0.60.0
+llvmlite>=0.42.0,<0.43.0
+
+# 解决distutils缺失问题
+setuptools>=65.0.0
+wheel>=0.40.0

@@ -2,13 +2,34 @@
 import streamlit as st
 import matplotlib.pyplot as plt
 import numpy as np
-
-# ---------------------- 配置Matplotlib中文字体 ----------------------
-plt.rcParams['font.sans-serif'] = ['SimHei']  # 显示中文（黑体）
-plt.rcParams['axes.unicode_minus'] = False  # 显示负号
+import matplotlib.font_manager as fm
 
 
-# ---------------------- 核心函数定义 ----------------------
+# ---------------------- 适配Linux的Matplotlib中文字体配置 ----------------------
+# 方案1：优先使用Linux自带的思源黑体（Noto Sans CJK SC）
+def set_chinese_font():
+    try:
+        # 查找Linux环境的中文字体
+        font_paths = fm.findSystemFonts(fontpaths=None, fontext='ttf')
+        # 优先选择思源黑体
+        for path in font_paths:
+            if 'Noto Sans CJK' in path or 'WenQuanYi' in path:
+                font_prop = fm.FontProperties(fname=path)
+                plt.rcParams['font.family'] = font_prop.get_name()
+                break
+        # 兼容配置：显示负号
+        plt.rcParams['axes.unicode_minus'] = False
+    except Exception:
+        # 容错：若找不到中文字体，使用默认字体+英文标签兜底
+        plt.rcParams['font.family'] = 'DejaVu Sans'
+        plt.rcParams['axes.unicode_minus'] = False
+
+
+# 执行字体配置
+set_chinese_font()
+
+
+# ---------------------- 核心函数定义（无修改） ----------------------
 def create_econ_canvas():
     """创建基础画布"""
     fig, ax = plt.subplots(figsize=(10, 6))
@@ -44,11 +65,11 @@ st.set_page_config(page_title="供需均衡可视化", layout="wide")
 st.title("📊 经济学供需均衡与价格管制交互演示")
 st.markdown("### 输入参数后按回车，实时查看供需曲线和均衡点变化")
 
-# 侧边栏：数字输入区（替换滑块为手动输入）
+# 侧边栏：数字输入区
 with st.sidebar:
     st.header("⚙️ 参数设置")
 
-    # 需求曲线参数（数字输入框）
+    # 需求曲线参数
     st.subheader("需求曲线")
     a = st.number_input(
         label="截距 (a) - 总需求规模",
@@ -61,7 +82,7 @@ with st.sidebar:
         help="需求曲线斜率，数值越大对价格越敏感"
     )
 
-    # 供给曲线参数（数字输入框）
+    # 供给曲线参数
     st.divider()
     st.subheader("供给曲线")
     c = st.number_input(
@@ -75,7 +96,7 @@ with st.sidebar:
         help="供给曲线斜率，数值越大对价格越敏感"
     )
 
-    # 价格管制参数（数字输入框）
+    # 价格管制参数
     st.divider()
     st.subheader("价格管制")
     price_floor = st.number_input(
@@ -94,7 +115,7 @@ with st.sidebar:
 fig, ax = create_econ_canvas()
 price_range = np.linspace(0, 200, 200)
 
-# 计算供需数量（过滤负数，避免不合理值）
+# 计算供需数量（过滤负数）
 Qd = demand_curve(price_range, a, b)
 Qs = supply_curve(price_range, c, d)
 Qd = np.where(Qd >= 0, Qd, np.nan)
@@ -115,24 +136,22 @@ ax.annotate(
     fontsize=10
 )
 
-# 价格下限（支持价格）：仅当下限>均衡价时生效
+# 价格下限逻辑
 if price_floor > eq_price and price_floor > 0:
     qd_floor = demand_curve(price_floor, a, b)
     qs_floor = supply_curve(price_floor, c, d)
     ax.axhline(price_floor, color='purple', linestyle='--', alpha=0.7, label='价格下限')
-    # 填充过剩区域
     ax.fill_betweenx(
         [price_floor, eq_price + 20],
         qd_floor, qs_floor,
         color='gray', alpha=0.3, label='过剩'
     )
 
-# 价格上限（价格管制）：仅当上限<均衡价时生效
+# 价格上限逻辑
 if price_ceiling < eq_price and price_ceiling > 0:
     qd_ceiling = demand_curve(price_ceiling, a, b)
     qs_ceiling = supply_curve(price_ceiling, c, d)
     ax.axhline(price_ceiling, color='orange', linestyle='--', alpha=0.7, label='价格上限')
-    # 填充短缺区域
     ax.fill_betweenx(
         [price_ceiling, eq_price - 20],
         qs_ceiling, qd_ceiling,
@@ -143,10 +162,9 @@ if price_ceiling < eq_price and price_ceiling > 0:
 ax.legend(loc='upper right', fontsize=10)
 plt.tight_layout()
 
-# ---------------------- 在网页中显示图表和说明 ----------------------
+# ---------------------- 显示图表和说明 ----------------------
 st.pyplot(fig)
 
-# 补充说明（帮助学生理解）
 st.divider()
 st.subheader("📝 核心计算结果")
 st.markdown(f"""

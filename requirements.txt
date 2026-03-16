@@ -1,12 +1,7 @@
-# 核心依赖
-streamlit>=1.30.0,<2.0.0
-matplotlib>=3.8.0,<4.0.0
-numpy>=1.26.0,<2.0.0
-
-# 如果用到numba/llvmlite，指定兼容版本
-numba>=0.59.0,<0.60.0
-llvmlite>=0.42.0,<0.43.0
-
-# 解决distutils缺失问题
-setuptools>=65.0.0
-wheel>=0.40.0
+# 核心依赖（无冗余，全部为预编译wheel版本）
+streamlit==1.50.0
+matplotlib==3.8.4
+numpy==1.26.4
+# 解决Python 3.11的distutils兼容问题
+setuptools==69.5.1
+wheel==0.43.0

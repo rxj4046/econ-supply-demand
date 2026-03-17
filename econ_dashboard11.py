@@ -35,9 +35,9 @@ def create_econ_canvas():
     fig, ax = plt.subplots(figsize=(10, 6))
     ax.set_xlim(0, 150)  # 数量范围
     ax.set_ylim(0, 200)  # 价格范围
-    ax.set_xlabel('Quantity (Q) 数量', fontsize=4)
-    ax.set_ylabel('Price ($P$) 价格', fontsize=4)
-    ax.set_title('供需均衡与价格管制', fontsize=6)
+    ax.set_xlabel('Quantity (Q) 数量', fontsize=12)
+    ax.set_ylabel('Price ($P$) 价格', fontsize=12)
+    ax.set_title('供需均衡与价格管制', fontsize=14)
     ax.grid(True, alpha=0.3)
     return fig, ax
 
@@ -133,7 +133,7 @@ ax.annotate(
     (eq_quantity, eq_price),
     xytext=(eq_quantity + 5, eq_price + 10),
     arrowprops=dict(arrowstyle='->', color='green'),
-    fontsize=4
+    fontsize=10
 )
 
 # 价格下限逻辑
@@ -159,7 +159,7 @@ if price_ceiling < eq_price and price_ceiling > 0:
     )
 
 # 图例和样式优化
-ax.legend(loc='upper right', fontsize=6)
+ax.legend(loc='upper right', fontsize=10)
 plt.tight_layout()
 
 # ---------------------- 显示图表和说明 ----------------------

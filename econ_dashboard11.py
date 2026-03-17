@@ -172,22 +172,22 @@ ax.annotate(
 if price_floor > eq_price and price_floor > 0:
     qd_floor = demand_curve(price_floor, a, b)
     qs_floor = supply_curve(price_floor, c, d)
-    ax.axhline(price_floor, color='purple', linestyle='--', alpha=0.7, label='价格下限')
+    ax.axhline(price_floor, color='purple', linestyle='--', alpha=0.7, label='Price Floor (价格下限)')
     ax.fill_betweenx(
         [price_floor, eq_price + 20],
         qd_floor, qs_floor,
-        color='gray', alpha=0.3, label='过剩'
+        color='gray', alpha=0.3, label='Surplus (过剩)'
     )
 
 # 价格上限
 if price_ceiling < eq_price and price_ceiling > 0:
     qd_ceiling = demand_curve(price_ceiling, a, b)
     qs_ceiling = supply_curve(price_ceiling, c, d)
-    ax.axhline(price_ceiling, color='orange', linestyle='--', alpha=0.7, label='价格上限')
+    ax.axhline(price_ceiling, color='orange', linestyle='--', alpha=0.7, label='Price Ceiling (价格上限)')
     ax.fill_betweenx(
         [price_ceiling, eq_price - 20],
         qs_ceiling, qd_ceiling,
-        color='red', alpha=0.3, label='短缺'
+        color='red', alpha=0.3, label='Shortage (短缺)'
     )
 
 ax.legend(loc='upper right', fontsize=10)

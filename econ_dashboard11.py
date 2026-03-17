@@ -6,7 +6,7 @@ import os
 
 # ---------------------- 1. 强制加载本地字体文件（核心中的核心） ----------------------
 # 字体文件名（必须和上传的一致）
-FONT_FILE = "SimHei.ttf"
+FONT_FILE = "simhei.ttf"
 # Streamlit Cloud 绝对路径（关键：替换成你的仓库名！）
 # 仓库名就是 GitHub 上的 repo 名，比如你的是 econ-supply-demand
 REPO_NAME = "econ-supply-demand"
@@ -24,7 +24,7 @@ if os.path.exists(FONT_PATH):
     plt.rcParams['font.family'] = font_prop.get_name()
     st.success("✅ 中文字体加载成功！")
 else:
-    st.error("❌ 字体文件不存在！检查路径或是否上传 SimHei.ttf")
+    st.error("❌ 字体文件不存在！检查路径或是否上传 simhei.ttf")
     # 兜底：避免崩溃
     plt.rcParams['font.family'] = 'DejaVu Sans'
 

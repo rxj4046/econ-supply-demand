@@ -24,7 +24,7 @@ if os.path.exists(FONT_PATH):
     plt.rcParams['font.family'] = font_prop.get_name()
     st.success("✅ 中文字体加载成功！")
 else:
-    st.error("❌ 字体文件不存在！检查路径或是否上传 simhei.ttf")
+    st.error("❌ 字体文件不存在！检查路径或是否上传 SimHei.ttf")
     # 兜底：避免崩溃
     plt.rcParams['font.family'] = 'DejaVu Sans'
 

@@ -1,7 +1,6 @@
-# 核心依赖（无冗余，全部为预编译wheel版本）
 streamlit==1.50.0
 matplotlib==3.8.4
 numpy==1.26.4
-# 解决Python 3.11的distutils兼容问题
 setuptools==69.5.1
 wheel==0.43.0
+plotly==5.18.0  # 新增 Plotly 依赖
